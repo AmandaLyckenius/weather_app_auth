@@ -1,5 +1,6 @@
 package com.amanda.weather_app_auth;
 
+import com.amanda.weather_app_auth.authority.UserRole;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -18,11 +19,13 @@ public class CustomUser {
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
-    private String role = "USER_ROLE";
+
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
     public CustomUser(){}
 
-    public CustomUser(String username, String password, String email, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled, String role) {
+    public CustomUser(String username, String password, String email, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled, UserRole userRole) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -30,7 +33,15 @@ public class CustomUser {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
-        this.role = role;
+        this.userRole = userRole;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public boolean isAccountNonExpired() {
@@ -91,13 +102,5 @@ public class CustomUser {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }
