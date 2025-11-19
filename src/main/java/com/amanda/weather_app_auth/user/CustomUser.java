@@ -2,6 +2,7 @@ package com.amanda.weather_app_auth.user;
 
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -92,8 +93,8 @@ public class CustomUser {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password, PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
     }
 
     public String getEmail() {
