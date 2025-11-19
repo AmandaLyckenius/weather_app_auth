@@ -1,6 +1,6 @@
-package com.amanda.weather_app_auth;
+package com.amanda.weather_app_auth.user;
 
-import com.amanda.weather_app_auth.authority.UserRole;
+import com.amanda.weather_app_auth.user.authority.UserRole;
 import jakarta.persistence.*;
 
 import java.util.UUID;

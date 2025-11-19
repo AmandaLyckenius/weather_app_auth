@@ -1,4 +1,4 @@
-package com.amanda.weather_app_auth.authority;
+package com.amanda.weather_app_auth.user.authority;
 
 public enum UserRoleName {
     GUEST("ROLE_GUEST"),

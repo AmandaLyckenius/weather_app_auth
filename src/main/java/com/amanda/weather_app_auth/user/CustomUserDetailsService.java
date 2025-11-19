@@ -1,4 +1,4 @@
-package com.amanda.weather_app_auth;
+package com.amanda.weather_app_auth.user;
 
 
 import org.springframework.security.core.userdetails.UserDetails;

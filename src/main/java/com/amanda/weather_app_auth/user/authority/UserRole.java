@@ -1,4 +1,4 @@
-package com.amanda.weather_app_auth.authority;
+package com.amanda.weather_app_auth.user.authority;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.amanda.weather_app_auth.authority.UserPermission.READ;
-import static com.amanda.weather_app_auth.authority.UserPermission.WRITE;
+import static com.amanda.weather_app_auth.user.authority.UserPermission.READ;
+import static com.amanda.weather_app_auth.user.authority.UserPermission.WRITE;
 
 public enum UserRole {
     GUEST(
