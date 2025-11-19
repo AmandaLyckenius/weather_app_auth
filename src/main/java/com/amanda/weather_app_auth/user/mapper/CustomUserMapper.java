@@ -1,6 +1,7 @@
 package com.amanda.weather_app_auth.user.mapper;
 
 import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
+import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
 import com.amanda.weather_app_auth.user.CustomUser;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,12 @@ public class CustomUserMapper {
         user.setEmail(customUserCreationDTO.email());
 
         return user;
+    }
+
+    public CustomUserResponseDTO toResponseDTO(CustomUser customUser){
+        return new CustomUserResponseDTO(
+                customUser.getUsername()
+        );
     }
 
 }
