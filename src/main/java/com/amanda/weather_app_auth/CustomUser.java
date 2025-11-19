@@ -18,10 +18,11 @@ public class CustomUser {
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
     private boolean isEnabled;
+    private String role = "USER_ROLE";
 
     public CustomUser(){}
 
-    public CustomUser(String username, String password, String email, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public CustomUser(String username, String password, String email, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled, String role) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,6 +30,7 @@ public class CustomUser {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
+        this.role = role;
     }
 
     public boolean isAccountNonExpired() {
@@ -89,5 +91,13 @@ public class CustomUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
