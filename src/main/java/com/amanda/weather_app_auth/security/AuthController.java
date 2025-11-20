@@ -2,7 +2,9 @@ package com.amanda.weather_app_auth.security;
 
 import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginDTO;
+import com.amanda.weather_app_auth.dto.CustomUserLoginResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
+import com.amanda.weather_app_auth.security.jwt.JwtUtils;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.authority.UserRole;
@@ -27,12 +29,14 @@ public class AuthController {
     private final CustomUserMapper customUserMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
-    public AuthController(CustomUserRepository customUserRepository, CustomUserMapper customUserMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public AuthController(CustomUserRepository customUserRepository, CustomUserMapper customUserMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.customUserRepository = customUserRepository;
         this.customUserMapper = customUserMapper;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/register")
@@ -60,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid CustomUserLoginDTO dto){
+    public ResponseEntity<CustomUserLoginResponseDTO> login(@RequestBody @Valid CustomUserLoginDTO dto){
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -69,11 +73,17 @@ public class AuthController {
                 )
         );
 
-        if (authentication.isAuthenticated()){
-            return ResponseEntity.ok("Login successfull");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
+        CustomUser user = customUserRepository
+                .findUserByUsername(dto.username())
+                .orElseThrow(()-> new RuntimeException("User not found"));
+
+        String token = jwtUtils.generateJwtToken(user);
+
+        CustomUserLoginResponseDTO responseDTO = new CustomUserLoginResponseDTO(
+                user.getUsername(), token
+        );
+
+        return ResponseEntity.ok(responseDTO);
     }
 
 
