@@ -1,6 +1,7 @@
 package com.amanda.weather_app_auth.security;
 
 import com.amanda.weather_app_auth.dto.AdminUserResponseDTO;
+import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.mapper.CustomUserMapper;
@@ -45,12 +46,7 @@ public class AdminController {
         }
 
         CustomUser userToDelete = customUserRepository.findUserByUsername(username)
-                .orElse(null);
-
-        if (userToDelete == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User '" + username + "' not found");
-        }
+                .orElseThrow(() -> new UserNotFoundException(username));
 
         customUserRepository.delete(userToDelete);
 

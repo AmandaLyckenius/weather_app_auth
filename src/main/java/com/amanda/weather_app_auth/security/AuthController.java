@@ -4,6 +4,7 @@ import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
+import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.security.jwt.JwtUtils;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
@@ -75,7 +76,7 @@ public class AuthController {
 
         CustomUser user = customUserRepository
                 .findUserByUsername(dto.username())
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new UserNotFoundException(dto.username()));
 
         String token = jwtUtils.generateJwtToken(user);
 
