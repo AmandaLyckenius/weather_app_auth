@@ -2,7 +2,8 @@ package com.amanda.weather_app_auth.user.authority;
 
 public enum UserRoleName {
     GUEST("ROLE_GUEST"),
-    USER("ROLE_USER");
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN");
 
     private final String roleName;
 

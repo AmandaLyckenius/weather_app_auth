@@ -18,6 +18,11 @@ public enum UserRole {
     USER(
             UserRoleName.USER.getRoleName(),
             Set.of(READ, WRITE)
+    ),
+
+    ADMIN(
+            UserRoleName.ADMIN.getRoleName(),
+            Set.of(READ, WRITE)
     );
 
     private final String roleName;
