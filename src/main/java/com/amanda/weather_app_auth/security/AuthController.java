@@ -5,6 +5,7 @@ import com.amanda.weather_app_auth.dto.CustomUserLoginDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
 import com.amanda.weather_app_auth.exception.UserNotFoundException;
+import com.amanda.weather_app_auth.exception.UsernameAlreadyExistsException;
 import com.amanda.weather_app_auth.security.jwt.JwtUtils;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
@@ -44,7 +45,7 @@ public class AuthController {
     public ResponseEntity<CustomUserResponseDTO> register(@RequestBody @Valid CustomUserCreationDTO dto){
 
         if (customUserRepository.existsByUsername(dto.username())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            throw new UsernameAlreadyExistsException(dto.username());
         }
 
         CustomUser user = customUserMapper.toEntity(dto);
