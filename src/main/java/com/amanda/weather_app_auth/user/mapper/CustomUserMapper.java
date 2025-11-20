@@ -1,5 +1,6 @@
 package com.amanda.weather_app_auth.user.mapper;
 
+import com.amanda.weather_app_auth.dto.AdminUserResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
 import com.amanda.weather_app_auth.user.CustomUser;
@@ -21,6 +22,15 @@ public class CustomUserMapper {
     public CustomUserResponseDTO toResponseDTO(CustomUser customUser){
         return new CustomUserResponseDTO(
                 customUser.getUsername()
+        );
+    }
+
+    public AdminUserResponseDTO toAdminDTO (CustomUser customUser){
+        return new AdminUserResponseDTO(
+                customUser.getId(),
+                customUser.getUsername(),
+                customUser.getEmail(),
+                customUser.getUserRole()
         );
     }
 

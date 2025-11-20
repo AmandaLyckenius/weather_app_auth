@@ -1,14 +1,13 @@
 package com.amanda.weather_app_auth.debug;
 
+import com.amanda.weather_app_auth.dto.AdminUserResponseDTO;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/debug")
@@ -43,6 +42,22 @@ public class DebugController {
         customUserRepository.save(admin);
 
         return ResponseEntity.ok("Debug admin created successfully");
+
+    }
+
+    @GetMapping("/roles/{username}")
+    public AdminUserResponseDTO checkRoles(@PathVariable String username) {
+        CustomUser user = customUserRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username " + username));
+
+        AdminUserResponseDTO responseDTO = new AdminUserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getUserRole()
+        );
+
+        return responseDTO;
 
     }
 

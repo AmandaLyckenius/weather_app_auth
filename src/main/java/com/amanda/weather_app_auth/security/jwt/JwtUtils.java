@@ -43,6 +43,7 @@ public class JwtUtils {
         String token = Jwts.builder()
                 .subject(customUser.getUsername())
                 .claim("authorities", roles)
+                .claim("userId", customUser.getId().toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key)
@@ -82,14 +83,12 @@ public class JwtUtils {
             return Set.of();
         }
 
-        // Förväntar sig strängar som "ROLE_USER", "ROLE_ADMIN"
         Set<UserRole> roles = authoritiesClaim.stream()
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .map(String::toUpperCase)
                 .map(roleString -> {
-                    // dina UserRole har t.ex. roleName = "ROLE_USER", enum = USER
-                    // så vi mappar "ROLE_USER" -> "USER" -> UserRole.USER
+
                     String enumName = roleString.replace("ROLE_", "");
                     return UserRole.valueOf(enumName);
                 })
