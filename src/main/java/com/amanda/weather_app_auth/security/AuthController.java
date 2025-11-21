@@ -12,6 +12,8 @@ import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import com.amanda.weather_app_auth.user.mapper.CustomUserMapper;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +34,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AuthController(CustomUserRepository customUserRepository, CustomUserMapper customUserMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.customUserRepository = customUserRepository;
@@ -45,6 +48,7 @@ public class AuthController {
     public ResponseEntity<CustomUserResponseDTO> register(@RequestBody @Valid CustomUserCreationDTO dto){
 
         if (customUserRepository.existsByUsername(dto.username())) {
+            log.warn("Attempt to register with existing username '{}'", dto.username());
             throw new UsernameAlreadyExistsException(dto.username());
         }
 
@@ -58,6 +62,7 @@ public class AuthController {
         user.setUserRole(UserRole.USER);
 
         CustomUser saved = customUserRepository.save(user);
+        log.info("User '{}' registered", saved.getUsername());
 
         CustomUserResponseDTO responseDTO = customUserMapper.toResponseDTO(saved);
 
@@ -68,6 +73,8 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<CustomUserLoginResponseDTO> login(@RequestBody @Valid CustomUserLoginDTO dto){
 
+        log.debug("Login attempt for username '{}'", dto.username());
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         dto.username(),
@@ -77,9 +84,13 @@ public class AuthController {
 
         CustomUser user = customUserRepository
                 .findUserByUsername(dto.username())
-                .orElseThrow(()-> new UserNotFoundException(dto.username()));
+                .orElseThrow(()-> {
+                    log.warn("Login failed: user '{}' not found", dto.username());
+                    return new UserNotFoundException(dto.username()}));
 
         String token = jwtUtils.generateJwtToken(user);
+
+        log.info("User '{}' logged in", dto.username());
 
         CustomUserLoginResponseDTO responseDTO = new CustomUserLoginResponseDTO(
                 user.getUsername(), token
