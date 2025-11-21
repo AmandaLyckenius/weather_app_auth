@@ -1,11 +1,10 @@
-package com.amanda.weather_app_auth.security;
+package com.amanda.weather_app_auth.controller;
 
 import com.amanda.weather_app_auth.dto.AdminUserResponseDTO;
 import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.mapper.CustomUserMapper;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

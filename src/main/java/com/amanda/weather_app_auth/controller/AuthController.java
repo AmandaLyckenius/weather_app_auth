@@ -1,4 +1,4 @@
-package com.amanda.weather_app_auth.security;
+package com.amanda.weather_app_auth.controller;
 
 import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginDTO;
@@ -84,9 +84,10 @@ public class AuthController {
 
         CustomUser user = customUserRepository
                 .findUserByUsername(dto.username())
-                .orElseThrow(()-> {
+                .orElseThrow(() -> {
                     log.warn("Login failed: user '{}' not found", dto.username());
-                    return new UserNotFoundException(dto.username()}));
+                    return new UserNotFoundException(dto.username());
+                });
 
         String token = jwtUtils.generateJwtToken(user);
 
