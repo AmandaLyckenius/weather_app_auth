@@ -28,16 +28,14 @@ public class AuthService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final AuthService authService;
 
 
-    public AuthService(CustomUserRepository customUserRepository, CustomUserMapper customUserMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils, AuthService authService) {
+    public AuthService(CustomUserRepository customUserRepository, CustomUserMapper customUserMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.customUserRepository = customUserRepository;
         this.customUserMapper = customUserMapper;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
-        this.authService = authService;
     }
 
     public CustomUserResponseDTO register(CustomUserCreationDTO dto) {
