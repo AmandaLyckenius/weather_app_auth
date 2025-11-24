@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     // Queues
-    public static final String REQUEST_QUEUE = "auth-request-queue";   // tar emot från Johan
-    public static final String RESPONSE_QUEUE = "auth-response-queue"; // skickar till Johan
+    public static final String REQUEST_QUEUE = "auth-request-queue";   // tar emot från Notification Service
+    public static final String RESPONSE_QUEUE = "auth-response-queue"; // skickar till Notification Service
 
     // Exchange
-    public static final String EXCHANGE = "auth-exchange";
+    public static final String EXCHANGE = "weather-exchange";
 
     // Routing keys
     public static final String REQUEST_ROUTING_KEY = "auth.request";

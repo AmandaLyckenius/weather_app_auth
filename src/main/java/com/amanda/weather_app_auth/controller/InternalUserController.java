@@ -20,6 +20,7 @@ public class InternalUserController {
         this.userService = userService;
     }
 
+    //Behövs inte vid rabbitMQ
     @GetMapping("/{id}")
     public ResponseEntity<UserLookupResponseDTO> getUserById(@PathVariable UUID id){
         UserLookupResponseDTO internalUserDTO = userService.getUserById(id);
