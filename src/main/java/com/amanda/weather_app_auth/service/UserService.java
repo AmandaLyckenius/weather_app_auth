@@ -66,8 +66,6 @@ public class UserService {
         log.info("Internal user lookup success for id {}", id);
 
         return new InternalUserDTO(
-                user.getId(),
-                user.getUsername(),
                 user.getEmail()
         );
     }
