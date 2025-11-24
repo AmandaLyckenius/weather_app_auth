@@ -1,9 +1,7 @@
 package com.amanda.weather_app_auth.controller;
 
 import com.amanda.weather_app_auth.dto.InternalUserDTO;
-import com.amanda.weather_app_auth.exception.UserNotFoundException;
-import com.amanda.weather_app_auth.user.CustomUser;
-import com.amanda.weather_app_auth.user.CustomUserRepository;
+import com.amanda.weather_app_auth.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +15,14 @@ import java.util.UUID;
 @RequestMapping("/internal/users")
 public class InternalUserController {
 
-    private final CustomUserRepository customUserRepository;
-
-    public InternalUserController(CustomUserRepository customUserRepository) {
-        this.customUserRepository = customUserRepository;
+    private final UserService userService;
+    public InternalUserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InternalUserDTO> getUserById(@PathVariable UUID id){
-        CustomUser user = customUserRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-
-        InternalUserDTO internalUserDTO = new InternalUserDTO(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail()
-        );
-        
+        InternalUserDTO internalUserDTO = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(internalUserDTO);
     }
 }
