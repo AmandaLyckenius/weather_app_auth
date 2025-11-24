@@ -1,15 +1,13 @@
 package com.amanda.weather_app_auth.service;
 
 import com.amanda.weather_app_auth.dto.AdminUserResponseDTO;
-import com.amanda.weather_app_auth.dto.InternalUserDTO;
+import com.amanda.weather_app_auth.dto.UserLookupResponseDTO;
 import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.user.CustomUser;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.mapper.CustomUserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +51,7 @@ public class UserService {
         customUserRepository.delete(userToDelete);
     }
 
-    public InternalUserDTO getUserById(UUID id) {
+    public UserLookupResponseDTO getUserById(UUID id) {
 
         log.debug("Fetching internal user info for id {}", id);
 
@@ -65,7 +63,7 @@ public class UserService {
 
         log.info("Internal user lookup success for id {}", id);
 
-        return new InternalUserDTO(
+        return new UserLookupResponseDTO(
                 user.getEmail()
         );
     }

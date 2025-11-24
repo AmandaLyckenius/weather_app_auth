@@ -1,6 +1,6 @@
 package com.amanda.weather_app_auth.controller;
 
-import com.amanda.weather_app_auth.dto.InternalUserDTO;
+import com.amanda.weather_app_auth.dto.UserLookupResponseDTO;
 import com.amanda.weather_app_auth.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class InternalUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InternalUserDTO> getUserById(@PathVariable UUID id){
-        InternalUserDTO internalUserDTO = userService.getUserById(id);
+    public ResponseEntity<UserLookupResponseDTO> getUserById(@PathVariable UUID id){
+        UserLookupResponseDTO internalUserDTO = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(internalUserDTO);
     }
 }
