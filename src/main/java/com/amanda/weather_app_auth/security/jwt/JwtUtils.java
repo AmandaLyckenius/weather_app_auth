@@ -122,7 +122,7 @@ public class JwtUtils {
         }
 
         for (Cookie cookie : cookies) {
-            if ("authToken".equals(cookie.getName())) {
+            if ("jwt".equals(cookie.getName())) {
                 logger.debug("JWT extracted from authToken cookie");
                 return cookie.getValue();
             }
