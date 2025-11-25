@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
+/**
+ * Custom JWT authentication filter.
+ * Extracts the JWT from HttpOnly cookies (or Authorization header as fallback),
+ * validates the token, loads the user, and sets the SecurityContext if authentication succeeds.
+ *
+ * Runs once per request before Spring's username/password authentication filter.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -28,14 +35,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.customUserDetailsService = customUserDetailsService;
     }
 
+    /**
+     * Processes each incoming request:
+     * - Extracts JWT from cookie or Authorization header(fallback)
+     * - Validates the token
+     * - Loads user details and sets authentication in the SecurityContext
+     * - Continues the filter chain regardless of authentication outcome
+     *
+     * If no valid token is found, the request proceeds as an unauthenticated user.
+     */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain
+    ) throws ServletException, IOException {
+
         log.debug("---JwtAuthenticationFilter start---");
 
         String token = jwtUtils.extractJwtFromCookie(request);
 
         if (token == null){
-            token = jwtUtils.extractJwtFromRequest(request); //om inte det funkar med extractJwtFromCookie
+            token = jwtUtils.extractJwtFromRequest(request); //fallback if it doesnt work with extractJwtFromCookie
         }
 
         if (token == null){
