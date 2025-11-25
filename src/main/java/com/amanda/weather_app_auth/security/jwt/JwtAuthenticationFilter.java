@@ -31,20 +31,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.debug("---JwtAuthenticationFilter start---");
-        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
-            log.warn("No JWT token found in Authorization header");
+        String token = jwtUtils.extractJwtFromCookie(request);
+
+        if (token == null){
+            token = jwtUtils.extractJwtFromRequest(request); //om inte det funkar med extractJwtFromCookie
+        }
+
+        if (token == null){
+            log.debug("No JWT token found in cookie or Authorization header");
             filterChain.doFilter(request,response);
+            log.debug("--JwtAuthenticationFilter end (no token)--");
             return;
         }
 
-        String token = authHeader.substring(7);
-        log.debug("Token extracted from header");
-
-        if (!jwtUtils.validateJwtToken(token)){
-            log.warn("JWT validation failed");
-            filterChain.doFilter(request, response);
+        if(!jwtUtils.validateJwtToken(token)){
+            log.warn("Jwt validation failed");
+            filterChain.doFilter(request,response);
+            log.debug("--JwtAuthenticationFilter end (invalid token)--");
             return;
         }
 
@@ -60,9 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     userDetails, null, userDetails.getAuthorities()
             );
 
-            authenticationToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request)
-            );
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
@@ -71,7 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
 
-        log.debug("---JwtAuthenticationFilter END---");
+        log.debug("---JwtAuthenticationFilter END ---");
 
     }
 }

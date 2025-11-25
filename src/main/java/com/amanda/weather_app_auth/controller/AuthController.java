@@ -6,7 +6,9 @@ import com.amanda.weather_app_auth.dto.CustomUserLoginResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
 import com.amanda.weather_app_auth.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +35,20 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<CustomUserLoginResponseDTO> login(@RequestBody @Valid CustomUserLoginDTO dto){
         CustomUserLoginResponseDTO responseDTO = authService.login(dto);
+        String token = responseDTO.token();
 
-        return ResponseEntity.ok(responseDTO);
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
+                .httpOnly(true)
+                .secure(false)  //ändra till true innan prod
+                .sameSite("Lax") //ändra ev till none innan prod
+                .path("/")
+                .maxAge(24*60*60) //Ändra ev innan prod.
+                .build();
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(responseDTO);
     }
 
 

@@ -5,6 +5,8 @@ import com.amanda.weather_app_auth.user.authority.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,5 +112,35 @@ public class JwtUtils {
             logger.error("JWT validation failed: {}", e.getMessage());
         }
         return false;
+    }
+
+    public String extractJwtFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            logger.debug("No cookies found in request");
+            return null;
+        }
+
+        for (Cookie cookie : cookies) {
+            if ("authToken".equals(cookie.getName())) {
+                logger.debug("JWT extracted from authToken cookie");
+                return cookie.getValue();
+            }
+        }
+
+        logger.debug("No authToken cookie found");
+        return null;
+    }
+
+    public String extractJwtFromRequest(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            logger.debug("JWT extracted from Authorization header");
+            return token;
+        }
+        logger.debug("No Bearer token found in Authorization header");
+        return null;
     }
 }
