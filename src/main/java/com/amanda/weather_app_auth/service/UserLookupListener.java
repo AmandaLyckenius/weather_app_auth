@@ -42,7 +42,7 @@ public class UserLookupListener {
 
         rabbitTemplate.convertAndSend(
                 RabbitConfig.EXCHANGE,
-                RabbitConfig.REQUEST_ROUTING_KEY,
+                RabbitConfig.RESPONSE_ROUTING_KEY,
                 responseDTO
         );
 

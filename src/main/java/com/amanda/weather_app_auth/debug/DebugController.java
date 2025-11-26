@@ -31,7 +31,7 @@ public class DebugController {
         CustomUser admin = new CustomUser();
         admin.setUsername("debug_admin");
         admin.setPassword(passwordEncoder.encode("Benny123!"));
-        admin.setEmail("debug@admin.com");
+        admin.setEmail("tommy.haraldsson@stud.sti.se");
 
         admin.setAccountNonExpired(true);
         admin.setAccountNonLocked(true);
