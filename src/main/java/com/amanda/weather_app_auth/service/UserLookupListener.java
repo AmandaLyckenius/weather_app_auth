@@ -39,7 +39,7 @@ public class UserLookupListener {
                 .orElseThrow(() -> new UserNotFoundException(userLookupRequestDTO.userId()));
 
         UserLookupResponseDTO responseDTO = new UserLookupResponseDTO(user.getEmail());
-        log.info("--Sending email--");
+        log.info("--Sending email to notification service--" + user.getEmail());
         rabbitTemplate.convertAndSend(
                 RabbitConfig.EXCHANGE,
                 RabbitConfig.RESPONSE_ROUTING_KEY,
