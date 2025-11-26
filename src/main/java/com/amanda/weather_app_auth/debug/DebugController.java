@@ -51,7 +51,7 @@ public class DebugController {
                 .orElseThrow(() -> new RuntimeException("User not found with username " + username));
 
         AdminUserResponseDTO responseDTO = new AdminUserResponseDTO(
-                user.getId(),
+                user.getUserId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getUserRole()

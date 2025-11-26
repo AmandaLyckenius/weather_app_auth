@@ -24,8 +24,19 @@ public class UserLookupListener {
     @RabbitListener(queues = RabbitConfig.REQUEST_QUEUE)
     public void handleUserLookup(UserLookupRequestDTO userLookupRequestDTO){
 
-        CustomUser user = customUserRepository.findById(userLookupRequestDTO.id())
-                .orElseThrow(() -> new UserNotFoundException(userLookupRequestDTO.id()));
+        System.out.println("🔥 Received UserLookupRequestDTO: " + userLookupRequestDTO);
+        System.out.println("🔥 userId = " + userLookupRequestDTO.userId());
+
+        if (userLookupRequestDTO.userId() == null) {
+            System.err.println("❌ userId i UserLookupRequestDTO är null – kan inte kalla findById");
+            // Här kan du antingen return:a, eller kasta en mer beskrivande exception
+            return;
+            // eller:
+            // throw new IllegalArgumentException("userId must not be null");
+        }
+
+        CustomUser user = customUserRepository.findByUserId(userLookupRequestDTO.userId())
+                .orElseThrow(() -> new UserNotFoundException(userLookupRequestDTO.userId()));
 
         UserLookupResponseDTO responseDTO = new UserLookupResponseDTO(user.getEmail());
 

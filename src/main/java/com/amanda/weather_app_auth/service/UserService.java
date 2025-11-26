@@ -53,15 +53,15 @@ public class UserService {
 
     public UserLookupResponseDTO getUserById(UUID id) {
 
-        log.debug("Fetching internal user info for id {}", id);
+        log.debug("Fetching internal user info for userId {}", id);
 
         CustomUser user = customUserRepository.findById(id)
                 .orElseThrow(() -> {
-                    log.warn("Internal lookup failed: user with id '{}' not found", id);
+                    log.warn("Internal lookup failed: user with userId '{}' not found", id);
                     return new UserNotFoundException(id);
                 });
 
-        log.info("Internal user lookup success for id {}", id);
+        log.info("Internal user lookup success for userId {}", id);
 
         return new UserLookupResponseDTO(
                 user.getEmail()

@@ -2,7 +2,6 @@ package com.amanda.weather_app_auth.user;
 
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import jakarta.persistence.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ public class CustomUser {
 
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
-    private UUID id;
+    private UUID userId;
     @Column(unique = true, nullable = false)
     private String username;
     private String password;
@@ -79,8 +78,8 @@ public class CustomUser {
         isEnabled = enabled;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getUserId() {
+        return userId;
     }
 
     public String getUsername() {

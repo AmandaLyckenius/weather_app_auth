@@ -27,7 +27,7 @@ public class CustomUserMapper {
 
     public AdminUserResponseDTO toAdminDTO (CustomUser customUser){
         return new AdminUserResponseDTO(
-                customUser.getId(),
+                customUser.getUserId(),
                 customUser.getUsername(),
                 customUser.getEmail(),
                 customUser.getUserRole()
