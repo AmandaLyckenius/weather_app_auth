@@ -72,7 +72,7 @@ public class AppSecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173" // lägg till url för hostad frontend här sen
+                "http://localhost:3000" // lägg till url för hostad frontend här sen
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));

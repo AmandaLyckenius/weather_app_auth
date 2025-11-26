@@ -40,10 +40,10 @@ public class AuthController {
 
         ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(false)  //ändra till true innan prod
-                .sameSite("Lax") //ändra ev till none innan prod
+                .secure(true)  //ändra till true innan prod
+                .sameSite("None") //ändra ev till none innan prod
                 .path("/")
-                .maxAge(24*60*60) //Ändra ev innan prod.
+                .maxAge(24*60*60*7) //Ändra ev innan prod.
                 .build();
 
 
@@ -56,10 +56,10 @@ public class AuthController {
     public ResponseEntity<String> logout() {
         ResponseCookie cookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())

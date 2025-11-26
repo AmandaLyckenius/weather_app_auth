@@ -68,20 +68,20 @@ When frontend is served from a different domain (e.g. Vercel):
 ## Production Checklist
 
 ### Cookies
-- [ ] Set `secure=true`
-- [ ] Set `SameSite=None`
-- [ ] Keep `HttpOnly=true`
-- [ ] Use consistent cookie name: `jwt`
+- [ X ] Set `secure=true`
+- [ X ] Set `SameSite=None`
+- [ X ] Keep `HttpOnly=true`
+- [ X ] Use consistent cookie name: `jwt`
 
 ### CORS
 - [ ] Add production frontend URL to `allowedOrigins`
-- [ ] Keep `allowCredentials=true`
+- [ X ] Keep `allowCredentials=true`
 
 ### JWT
 - [ ] Review token expiration time
 
 ### Logging
-- [ ] Use INFO in production
+- [ X ] Use INFO in production
 - [ ] Ensure no sensitive data is logged
 
 ---
