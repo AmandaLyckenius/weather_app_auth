@@ -27,11 +27,9 @@ public class UserLookupListener {
     @RabbitListener(queues = RabbitConfig.REQUEST_QUEUE)
     public void handleUserLookup(UserLookupRequestDTO userLookupRequestDTO){
         log.info("--Listener starting--");
-        System.out.println("🔥 Received UserLookupRequestDTO: " + userLookupRequestDTO);
-        System.out.println("🔥 userId = " + userLookupRequestDTO.userId());
 
         if (userLookupRequestDTO.userId() == null) {
-            System.err.println("❌ userId i UserLookupRequestDTO är null – kan inte kalla findById");
+            System.err.println("UserId in UserLookupRequestDTO is null – can not call findById");
             return;
         }
 
@@ -39,7 +37,9 @@ public class UserLookupListener {
                 .orElseThrow(() -> new UserNotFoundException(userLookupRequestDTO.userId()));
 
         UserLookupResponseDTO responseDTO = new UserLookupResponseDTO(user.getEmail());
-        log.info("--Sending email to notification service--" + user.getEmail());
+
+        log.info("--Sending email to notification service--");
+
         rabbitTemplate.convertAndSend(
                 RabbitConfig.EXCHANGE,
                 RabbitConfig.RESPONSE_ROUTING_KEY,
