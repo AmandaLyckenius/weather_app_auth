@@ -52,7 +52,7 @@ public class AppSecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/auth/register", "/auth/login", "/debug/**").permitAll()
+                        .requestMatchers("/auth/register", "/auth/login", "/debug/**", "/health").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
