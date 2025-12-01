@@ -42,6 +42,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(true)  //ändra till true innan prod
                 .sameSite("None") //ändra ev till none innan prod
+                .domain("onrender.com")
                 .path("/")
                 .maxAge(24*60*60*7) //Ändra ev innan prod.
                 .build();
@@ -57,6 +58,7 @@ public class AuthController {
         ResponseCookie cookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
                 .secure(true)
+                .domain("onrender.com")
                 .path("/")
                 .maxAge(0)
                 .sameSite("None")
