@@ -36,9 +36,9 @@ public class UserLookupListener {
         CustomUser user = customUserRepository.findByUserId(userLookupRequestDTO.userId())
                 .orElseThrow(() -> new UserNotFoundException(userLookupRequestDTO.userId()));
 
-        UserLookupResponseDTO responseDTO = new UserLookupResponseDTO(user.getEmail());
+        UserLookupResponseDTO responseDTO = new UserLookupResponseDTO(user.getEmail(), userLookupRequestDTO.city());
 
-        log.info("--Sending email to notification service--");
+        log.info("--Sending email + city to notification service--");
 
         rabbitTemplate.convertAndSend(
                 RabbitConfig.EXCHANGE,

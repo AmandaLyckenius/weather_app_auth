@@ -36,21 +36,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<CustomUserLoginResponseDTO> login(@RequestBody @Valid CustomUserLoginDTO dto){
         CustomUserLoginResponseDTO responseDTO = authService.login(dto);
-        String token = responseDTO.token();
-
-        ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
-                .httpOnly(true)
-                .secure(true)  //ändra till true innan prod
-                .sameSite("None") //ändra ev till none innan prod
-                .domain("onrender.com")
-                .path("/")
-                .maxAge(24*60*60*7) //Ändra ev innan prod.
-                .build();
-
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/logout")
