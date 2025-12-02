@@ -71,12 +71,7 @@ public class AuthService {
                 )
         );
 
-        CustomUser user = customUserRepository
-                .findUserByUsername(dto.username())
-                .orElseThrow(() -> {
-                    log.warn("Login failed: user '{}' not found", dto.username());
-                    return new UserNotFoundException(dto.username());
-                });
+        CustomUser user = (CustomUser) authentication.getPrincipal();
 
         String token = jwtUtils.generateJwtToken(user);
 
