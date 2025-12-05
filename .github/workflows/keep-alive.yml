@@ -16,22 +16,18 @@ jobs:
 
           echo "---- Auth service ----"
           echo "Pinging: ${{ secrets.RENDER_URL }}"
-          curl -L --silent --show-error --fail ${{ secrets.RENDER_URL }}
-          echo "Auth service responded"
+          curl -L --silent --show-error --fail ${{ secrets.RENDER_URL }} || echo "Auth service FAILED"
 
           echo "---- Notification service ----"
           echo "Pinging: ${{ secrets.JOHAN_RENDER_URL }}"
-          curl -L --silent --show-error --fail ${{ secrets.JOHAN_RENDER_URL }}
-          echo "Notificaion service responded"
+          curl -L --silent --show-error --fail ${{ secrets.JOHAN_RENDER_URL }} || echo "Notification service FAILED"
 
           echo "---- Weather service ----"
           echo "Pinging: ${{ secrets.DAVID_RENDER_URL }}"
-          curl -L --silent --show-error --fail ${{ secrets.DAVID_RENDER_URL }}
-          echo "Weather service responded"
+          curl -L --silent --show-error --fail ${{ secrets.DAVID_RENDER_URL }} || echo "Weather service FAILED"
 
           echo "---- Subscription service ----"
           echo "Pinging: ${{ secrets.TOMMY_RENDER_URL }}"
-          curl -L --silent --show-error --fail ${{ secrets.TOMMY_RENDER_URL }}
-          echo "Subcription service responded"
+          curl -L --silent --show-error --fail ${{ secrets.TOMMY_RENDER_URL }} || echo "Subscription service FAILED"
 
           echo "=== KEEP ALIVE CHECK END ==="
