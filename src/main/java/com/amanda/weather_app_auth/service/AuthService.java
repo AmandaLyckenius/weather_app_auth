@@ -4,6 +4,7 @@ import com.amanda.weather_app_auth.dto.CustomUserCreationDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginDTO;
 import com.amanda.weather_app_auth.dto.CustomUserLoginResponseDTO;
 import com.amanda.weather_app_auth.dto.CustomUserResponseDTO;
+import com.amanda.weather_app_auth.exception.EmailAlreadyExistsException;
 import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.exception.UsernameAlreadyExistsException;
 import com.amanda.weather_app_auth.security.jwt.JwtUtils;
@@ -43,6 +44,11 @@ public class AuthService {
         if (customUserRepository.existsByUsername(dto.username())) {
             log.warn("Attempt to register with existing username '{}'", dto.username());
             throw new UsernameAlreadyExistsException(dto.username());
+        }
+
+        if (customUserRepository.existsByEmail(dto.email())){
+            log.warn("Attempt to register with existing email '{}'", dto.email());
+            throw new EmailAlreadyExistsException(dto.email());
         }
 
         CustomUser user = customUserMapper.toEntity(dto);
