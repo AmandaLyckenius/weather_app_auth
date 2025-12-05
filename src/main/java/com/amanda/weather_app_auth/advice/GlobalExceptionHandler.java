@@ -1,5 +1,6 @@
 package com.amanda.weather_app_auth.advice;
 
+import com.amanda.weather_app_auth.exception.EmailAlreadyExistsException;
 import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.exception.UsernameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<String> handleUsernameAlreadyExists(UsernameAlreadyExistsException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<String> handleEmailAlreadyExists(EmailAlreadyExistsException e){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
