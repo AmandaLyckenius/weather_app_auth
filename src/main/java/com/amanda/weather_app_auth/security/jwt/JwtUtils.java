@@ -1,6 +1,7 @@
 package com.amanda.weather_app_auth.security.jwt;
 
 import com.amanda.weather_app_auth.user.CustomUser;
+import com.amanda.weather_app_auth.user.CustomUserDetails;
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,24 +35,24 @@ public class JwtUtils {
         this.jwtExpirationMs = expirationMs;
     }
 
-    public String generateJwtToken(CustomUser customUser) {
+    public String generateJwtToken(CustomUserDetails customUserDetails) {
         logger.debug("Generating JWT for user: {} with role: {}",
-                customUser.getUsername(), customUser.getUserRole());
+                customUserDetails.getUsername(), customUserDetails.getUserRole());
 
-        String roleName = customUser.getUserRole().getRoleName();
+        String roleName = customUserDetails.getUserRole().getRoleName();
 
         List<String> roles = List.of(roleName);
 
         String token = Jwts.builder()
-                .subject(customUser.getUsername())
+                .subject(customUserDetails.getUsername())
                 .claim("authorities", roles)
-                .claim("userId", customUser.getUserId().toString())
+                .claim("userId", customUserDetails.getUserId().toString())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(key)
                 .compact();
 
-        logger.info("JWT generated successfully for user: {}", customUser.getUsername());
+        logger.info("JWT generated successfully for user: {}", customUserDetails.getUsername());
         return token;
     }
 

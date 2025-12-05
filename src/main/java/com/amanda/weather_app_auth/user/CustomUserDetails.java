@@ -1,9 +1,11 @@
 package com.amanda.weather_app_auth.user;
 
+import com.amanda.weather_app_auth.user.authority.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -11,6 +13,22 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(CustomUser customUser) {
         this.customUser = customUser;
+    }
+
+    public CustomUser getCustomUser() {
+        return customUser;
+    }
+
+    public UUID getUserId() {
+        return customUser.getUserId();
+    }
+
+    public UserRole getUserRole() {
+        return customUser.getUserRole();
+    }
+
+    public String getEmail() {
+        return customUser.getEmail();
     }
 
     @Override

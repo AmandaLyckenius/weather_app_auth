@@ -9,6 +9,7 @@ import com.amanda.weather_app_auth.exception.UserNotFoundException;
 import com.amanda.weather_app_auth.exception.UsernameAlreadyExistsException;
 import com.amanda.weather_app_auth.security.jwt.JwtUtils;
 import com.amanda.weather_app_auth.user.CustomUser;
+import com.amanda.weather_app_auth.user.CustomUserDetails;
 import com.amanda.weather_app_auth.user.CustomUserRepository;
 import com.amanda.weather_app_auth.user.authority.UserRole;
 import com.amanda.weather_app_auth.user.mapper.CustomUserMapper;
@@ -77,14 +78,15 @@ public class AuthService {
                 )
         );
 
-        CustomUser user = (CustomUser) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        String token = jwtUtils.generateJwtToken(user);
 
-        log.info("User '{}' logged in", user.getUsername());
+        String token = jwtUtils.generateJwtToken(userDetails);
+
+        log.info("User '{}' logged in", userDetails.getUsername());
 
         return new CustomUserLoginResponseDTO(
-                user.getUsername(), token
+                userDetails.getUsername(), token
         );
     }
 
